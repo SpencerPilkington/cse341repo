@@ -9,6 +9,7 @@ const rootDir = require('../util/path');
 const books = [];
 const summaries = [];
 
+
 router.get('/add-input',(req,res,next) => {
     res.render('input', {
         pageTitle:'Input',
