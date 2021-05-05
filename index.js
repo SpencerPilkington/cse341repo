@@ -22,7 +22,8 @@ const ta01Routes = require('./routes/ta01');
 const ta02Routes = require('./routes/ta02');
 const ta03Routes = require('./routes/ta03'); 
 const ta04Routes = require('./routes/ta04');
-const prove02 = require('./prove02');
+const userData = require('./routes/prove02-input');
+
 
 app.use(express.static(path.join(__dirname, 'public')))
    .set('views', path.join(__dirname, 'views'))
@@ -37,6 +38,17 @@ app.use(express.static(path.join(__dirname, 'public')))
    .use('/ta02', ta02Routes) 
    .use('/ta03', ta03Routes) 
    .use('/ta04', ta04Routes)
+   .use(userData.routes)
+   .get('/main',(req,res,next) => {
+    const books = userData.books;
+    const summaries = userData.summaries;
+    res.render('pages/main', {
+        title:"main",
+        books: books,
+        summaries: summaries,
+        path: '/main'
+    });
+})
    .get('/', (req, res, next) => {
      // This is the primary index, always handled last. 
      res.render('pages/index', {title: 'Welcome to my CSE341 repo', path: '/'});

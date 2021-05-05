@@ -11,8 +11,8 @@ const summaries = [];
 
 
 router.get('/add-input',(req,res,next) => {
-    res.render('input', {
-        pageTitle:'Input',
+    res.render('pages/input', {
+        title: "Input",
         path: '/add-input',
         books: books,
         summaries: summaries
@@ -24,7 +24,7 @@ router.get('/add-input',(req,res,next) => {
 router.post('/add-input',(req,res,next) => {
     books.push({name: req.body.books});
     summaries.push({name: req.body.summaries});
-    res.redirect('/');
+    res.redirect('/main');
 });
 
 
