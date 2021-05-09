@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../../includes/prove03header.ejs %>
+</head>
+<body>
+    <% include ../../includes/prove03Nav.ejs %>
+    <h1><%= product.title%></h1>
+    <hr>
+    <div>
+        <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+    </div>
+    <h2><%= product.price %></h2>
+    <p1><%= product.description %></p1>
+    <br>
+    <br>
+    <a href="/shop">Back to Shop</a>
+</body>
+</html>
