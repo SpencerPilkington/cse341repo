@@ -13,26 +13,34 @@ exports.postAddProduct = (req,res,next) => {
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
     const description = req.body.description;
-    const product = new Product(
-         null,
-         title,
-         imageUrl,
-         description,
-         price);
-    product.save();
+    req.user
+    const product = new Product({
+         title: title,
+         imageUrl: imageUrl,
+         description: description,
+         price: price,
+         userId: req.user
+    });
+    product.save()
+    .then(result => {
     res.redirect('/shop');
+    })
+    .catch(err => {
+        console.log(err);
+    });
 };
 
 exports.getProducts = (req,res,next) => {
-    Product.fetchAll(products => {
+    Product.find()
+    .then(products => {
         res.render('pages/admin/products', {
             products:products,
             pageTitle: 'Admin Products',
             path: '/pages/admin/products'
-
         });
 
-    });
+    })
+    .catch(err => console.log(err));
 };
 
 exports.getEditProduct = (req,res,next) => {
@@ -41,7 +49,8 @@ exports.getEditProduct = (req,res,next) => {
         return res.redirect('/home');
     }
     const productId = req.params.productId;
-    Product.findById(productId, product => {
+    Product.findById(productId)
+    .then(product => {
         if (!product) {
             return res.redirect('home')
         }
@@ -50,9 +59,9 @@ exports.getEditProduct = (req,res,next) => {
             path: '/pages/admin/edit-product',
             editing: editMode,
             product: product
-        
-    });
-});
+        });
+    })
+    .catch(err => console.log(err));
 };
 
 exports.postEditProduct = (req,res,next) => {
@@ -61,15 +70,27 @@ exports.postEditProduct = (req,res,next) => {
     const updatedPrice = req.body.price;
     const updatedImageUrl = req.body.imageUrl;
     const updatedDescription = req.body.description;
-    const updatedProduct = new Product(productId, updatedTitle, updatedImageUrl, updatedDescription, updatedPrice);
-    updatedProduct.save();
-    res.redirect('/admin/products');
+    Product.findById(productId).then(product => {
+        product.title = updatedTitle,
+         product.imageUrl = updatedImageUrl,
+         product.description = updatedDescription,
+         product.price = updatedPrice;
+         return product
+         .save()
+    })
+    .then(result => {
+        res.redirect('/admin/products');
+    })
+    .catch(err => console.log(err));
     
 };
 
 
 exports.postDeleteProduct = (req,res,next) => {
     const productId = req.body.productId;
-    Product.deleteById(productId);
-    res.redirect('/admin/products');
+    Product.findByIdAndRemove(productId)
+    .then(() => {
+        res.redirect('/admin/products');
+    })
+    .catch(err => console.log(err));
 };

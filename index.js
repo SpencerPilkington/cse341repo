@@ -17,6 +17,7 @@ const path = require('path');
 const PORT = process.env.PORT || 5000 // So we can run on heroku || (OR) localhost:5000
 const cors = require('cors') // Place this with other requires (like 'path' and 'express')
 const mongoose = require('mongoose');
+const User = require('./models/user');
 const app = express();
 
 // Route setup. You can implement more in the future!
@@ -38,6 +39,15 @@ app.use(express.static(path.join(__dirname, 'public')))
    //.engine('hbs', expressHbs({layoutsDir: 'views/layouts/', defaultLayout: 'main-layout', extname: 'hbs'})) // For handlebars
    //.set('view engine', 'hbs')
    .use(bodyParser.urlencoded({extended: false})) // For parsing the body of a POST
+  //  .use ((req,res,next) => {
+  //    User.findById('')
+  //    .then(user => {
+  //      req.user = user;
+  //      next();
+  //    })
+  //    .catch(err => console.log(err));
+  //  })
+   
    .use('/ta01', ta01Routes)
    .use('/ta02', ta02Routes) 
    .use('/ta03', ta03Routes) 
@@ -87,6 +97,19 @@ mongoose
   )
   .then(result => {
      // This should be your user handling code implement following the course videos
+     User.findOne()
+     .then(user => {
+       if(!user) {
+         const user = new User({
+           name: 'name',
+           email: 'name@test.com',
+           cart: {
+             items: []
+           }
+         });
+         user.save();
+       }
+     });
     app.listen(PORT);
   })
   .catch(err => {
