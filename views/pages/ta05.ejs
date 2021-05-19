@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../includes/header.ejs %>
+  <% switch(style) {
+      case '1': %>
+      <link rel="stylesheet" type="text/css" href="/stylesheets/theme1.css" />
+      <$ break;
+      case '2': %>
+      <link rel="stylesheet" type="text/css" href="/stylesheets/theme2.css" />
+      <$ break;
+      case '3': %>
+      <link rel="stylesheet" type="text/css" href="/stylesheets/theme3.css" />
+      <$ break;
+      default: %>
+      <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
+      <%
+  } %>
+</head>
+
+<body>
+  <% include ../includes/nav.ejs %>
+<div class="jumbotron text-center">
+  <div class="container">
+    <h1><%= title %></h1>
+  </div>
+</div>
+<div class="container">
+  <form action="/change-style" method="POST">
+    <label for="style">Choose your theme</label>
+        <select id="style" name="style">
+            <option value='0'>
+                Default(Blue)
+            </option>
+            <option value='0'>
+                Style 1 (Green)
+            </option>
+            <option value='0'>
+                Style 2 (Purple)
+            </option>
+            <option value='0'>
+                Style 3 (Orange)
+            </option>
+        </select>
+        <button type="submit">Change Style</button>
+    </form>
+    </div>
+    <div>
+    <form action="/counter" method="POST">
+        <input type="hidden" name="constant" value="1">
+        <button class="btn btn-default" type="submit">+</button>
+    </form>
+    <%= counter %>
+    <form action="/counter" method="POST">
+        <input type="hidden" name="constant" value="-1">
+        <button class="btn btn-default" type="submit">-</button>
+    </form>
+    </div>
+    <div>
+        <form action="/reset" method="POST">
+            <input type="hidden" name="reset" value="true">
+            <button class="btn btn-default" type="submit">Reset Session</button>
+        </form>
+    </div>
+
+
+
+
+</body>
+</html>

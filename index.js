@@ -19,12 +19,14 @@ const cors = require('cors') // Place this with other requires (like 'path' and 
 const mongoose = require('mongoose');
 const User = require('./models/user');
 const app = express();
+const session = require('express-session');
 
 // Route setup. You can implement more in the future!
 const ta01Routes = require('./routes/ta01');
 const ta02Routes = require('./routes/ta02');
 const ta03Routes = require('./routes/ta03'); 
 const ta04Routes = require('./routes/ta04');
+const ta05Routes = require('./routes/ta05');
 const userData = require('./routes/prove02-input');
 const prove03adminRoute = require('./routes/prove03-admin');
 const prove03shopRoute = require('./routes/prove03-shop');
@@ -47,11 +49,18 @@ app.use(express.static(path.join(__dirname, 'public')))
   //    })
   //    .catch(err => console.log(err));
   //  })
+   .use(session({
+     secret: 'dfgdfsdfSSDFfg',
+     resave: false,
+     saveUninitialized: false,
+    })
+   )
    
    .use('/ta01', ta01Routes)
    .use('/ta02', ta02Routes) 
    .use('/ta03', ta03Routes) 
    .use('/ta04', ta04Routes)
+   .use('/ta05', ta05Routes)
    .use(userData.routes)
    .get('/main',(req,res,next) => {
     const books = userData.books;
