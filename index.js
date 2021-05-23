@@ -20,6 +20,14 @@ const mongoose = require('mongoose');
 const User = require('./models/user');
 const app = express();
 const session = require('express-session');
+const csrf = require('csurf');
+const flash = require('connect-flash');
+const MongoDBStore = require('connect-mongodb-session')(session);
+const MONGODB_URL = process.env.MONGODB_URL || "mongodb+srv://SpencerPilkington:Gs3d7fsbFSsdd122@cluster0.umk1b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const store = new MongoDBStore({
+  uri: MONGODB_URL,
+  collection: 'sessions'
+});
 
 // Route setup. You can implement more in the future!
 const ta01Routes = require('./routes/ta01');
@@ -28,9 +36,10 @@ const ta03Routes = require('./routes/ta03');
 const ta04Routes = require('./routes/ta04');
 const ta05Routes = require('./routes/ta05');
 const userData = require('./routes/prove02-input');
-const prove03adminRoute = require('./routes/prove03-admin');
-const prove03shopRoute = require('./routes/prove03-shop');
-
+const prove05adminRoute = require('./routes/prove05-admin');
+const prove05shopRoute = require('./routes/prove05-shop');
+const csrfProtection = csrf();
+const authRoutes = require('./routes/auth');
 
 app.use(express.static(path.join(__dirname, 'public')))
    .set('views', path.join(__dirname, 'views'))
@@ -55,6 +64,25 @@ app.use(express.static(path.join(__dirname, 'public')))
      saveUninitialized: false,
     })
    )
+   .use(csrfProtection)
+   .use(flash())
+   .use((req,res,next) => {
+     if(!req.session.user) {
+       return next();;
+     }
+     User.findById(req.session.user._id)
+     .then(user => {
+       req.user = user;
+       next();
+     })
+     .catch(err => console.log(err));
+   })
+
+   .use((req,res,next) => {
+     res.locals.isAuthenticated = req.session.isLoggedIn;
+     res.locals.csrfToken = req.csrfToken();
+     next();
+   })
    
    .use('/ta01', ta01Routes)
    .use('/ta02', ta02Routes) 
@@ -72,8 +100,9 @@ app.use(express.static(path.join(__dirname, 'public')))
         path: '/main'
     });
 })
-   .use('/admin', prove03adminRoute)
-   .use(prove03shopRoute)
+   .use('/admin', prove05adminRoute)
+   .use(prove05shopRoute)
+   .use(authRoutes)
    .get('/', (req, res, next) => {
      // This is the primary index, always handled last. 
      res.render('pages/index', {title: 'Welcome to my CSE341 repo', path: '/'});
@@ -98,7 +127,7 @@ const options = {
     family: 4
 };
 
-const MONGODB_URL = process.env.MONGODB_URL || "mongodb+srv://SpencerPilkington:Gs3d7fsbFSsdd122@cluster0.umk1b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+
    
 mongoose
   .connect(

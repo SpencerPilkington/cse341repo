@@ -14,8 +14,7 @@
       <$ break;
       default: %>
       <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
-      <%
-  } %>
+      <% } %>
 </head>
 
 <body>
@@ -26,6 +25,7 @@
   </div>
 </div>
 <div class="container">
+    <div>
   <form action="/change-style" method="POST">
     <label for="style">Choose your theme</label>
         <select id="style" name="style">
@@ -62,8 +62,7 @@
             <button class="btn btn-default" type="submit">Reset Session</button>
         </form>
     </div>
-
-
+</div>
 
 
 </body>

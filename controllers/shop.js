@@ -7,7 +7,8 @@ exports.getProducts = (req,res,next) => {
         res.render('pages/shop/product-list', {
             products: products,
             pageTitle: 'All Products',
-            path: '/products'
+            path: '/products',
+            isAuthenticated: req.session.isLoggedIn
         });
     })
     .catch(err => {
@@ -18,11 +19,12 @@ exports.getProducts = (req,res,next) => {
 exports.getProduct = (req,res,next) => {
     const productId = req.params.productId;
     Product.findById(productId)
-    .then(productId, product => {
+    .then(product => {
         res.render('pages/shop/product-detail', {
             product: product,
             pageTitle: product.title,
-            path: '/products'
+            path: '/products',
+            isAuthenticated: req.session.isLoggedIn
         });
     })
     .catch(err => console.log(err));
@@ -46,9 +48,9 @@ exports.getCart = (req, res, next) => {
     .execPopulate()
     .then(user => {
         const products = user.cart.items;
-        res.render('shop/cart', {
-            path: 'cart',
-            pagetTitle: 'Cart',
+        res.render('pages/shop/cart', {
+            path: '/cart',
+            pageTitle: 'Cart',
             products: products
         });
     })
