@@ -36,7 +36,7 @@ exports.getIndex = (req,res,next) => {
         res.render('pages/shop/index',{
             products: products,
             pageTitle: 'Home',
-            path: '/pages/shop/index'
+            path: '/pages/shop/index',
         });
     })
     .catch(err => console.log(err));
@@ -65,7 +65,8 @@ exports.postCart = (req, res, next) => {
     .then(result => {
         console.log(result);
         res.redirect('/cart');
-    });
+    })
+    .catch(err => console.log(err));
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {

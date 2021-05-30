@@ -38,6 +38,7 @@ const ta05Routes = require('./routes/ta05');
 const userData = require('./routes/prove02-input');
 const prove05adminRoute = require('./routes/prove05-admin');
 const prove05shopRoute = require('./routes/prove05-shop');
+const errorController = require('./controllers/error');
 const csrfProtection = csrf();
 const authRoutes = require('./routes/auth');
 
@@ -62,10 +63,13 @@ app.use(express.static(path.join(__dirname, 'public')))
      secret: 'dfgdfsdfSSDFfg',
      resave: false,
      saveUninitialized: false,
+     store: store
     })
    )
    .use(csrfProtection)
    .use(flash())
+
+   
    .use((req,res,next) => {
      if(!req.session.user) {
        return next();;
@@ -77,12 +81,12 @@ app.use(express.static(path.join(__dirname, 'public')))
      })
      .catch(err => console.log(err));
    })
-
    .use((req,res,next) => {
-     res.locals.isAuthenticated = req.session.isLoggedIn;
-     res.locals.csrfToken = req.csrfToken();
-     next();
-   })
+    res.locals.isAuthenticated = req.session.isLoggedIn;
+    res.locals.csrfToken = req.csrfToken();
+    next();
+  })
+   
    
    .use('/ta01', ta01Routes)
    .use('/ta02', ta02Routes) 
@@ -107,6 +111,7 @@ app.use(express.static(path.join(__dirname, 'public')))
      // This is the primary index, always handled last. 
      res.render('pages/index', {title: 'Welcome to my CSE341 repo', path: '/'});
     })
+   .use(errorController.get404)
    .use((req, res, next) => {
      // 404 page
      res.render('pages/404', {title: '404 - Page Not Found', path: req.url})
@@ -135,19 +140,19 @@ mongoose
   )
   .then(result => {
      // This should be your user handling code implement following the course videos
-     User.findOne()
-     .then(user => {
-       if(!user) {
-         const user = new User({
-           name: 'name',
-           email: 'name@test.com',
-           cart: {
-             items: []
-           }
-         });
-         user.save();
-       }
-     });
+    //  User.findOne()
+    //  .then(user => {
+    //    if(!user) {
+    //      const user = new User({
+    //        name: 'name',
+    //        email: 'name@test.com',
+    //        cart: {
+    //          items: []
+    //        }
+    //      });
+    //      user.save();
+    //    }
+    //  });
     app.listen(PORT);
   })
   .catch(err => {
