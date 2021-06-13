@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
   <% include ../includes/header.ejs %>
@@ -17,5 +17,48 @@
 </div>
 
 
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../includes/header.ejs %>
+</head>
+<body>
+  <% include ../includes/nav.ejs %>
+<div class="jumbotron text-center">
+  <div class="container">
+    <h1><%= title %></h1>
+    <p>This is the placeholder for Team Activity 03</p>
+    <form action ="/ta03/search" method ="POST" > 
+    <input type="text" name="tag" placeholder="tag" style="color:black"> 
+    <button type= "submit">Search</button>
+    </form>
+    <ul>
+      <%  for(product of tagProducts) { %>
+        <li>
+          <p>
+              <%= product.name %><br>
+                  <%= product.description %><br>
+                      <%= product.price %>
+          </p>
+          <img src="<%= product.imageUrl %>" alt="<%= product.name %>"></img>
+          <p> tags: </p>
+          <ul>
+              <% for (let tag of product.tags) { %>
+                  <li>
+                      <%= tag %>
+                  </li>
+                  <% } %>
+          </ul>
+      </li>
+      <% } %>
+    </ul>
+  </div>
+  <%- include('/pagination.ejs', {currentPage: currentPage, nextPage:nextPage, previousPage:previousPage, lastPage:lastPage, hasNextPage:hasNextPage,hasPreviousPage:hasPreviousPage}) %>
+</div>
+<div class="container">
+</div>
 </body>
 </html>
