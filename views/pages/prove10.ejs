@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../includes/header.ejs %>
+  <title><%= pageTitle %></title>
+<style>
+    h1 {
+        color: black;
+    }
+    ul {
+        color:black;
+    }
+</style>
+</head>
+
+<body>
+  <% include ../includes/nav.ejs %>
+<div class="jumbotron text-center">
+  <div class="container">
+    <h1 style="color:black;">Names:</h1>
+    <ul id="nameList" class="" style="color:black;">
+
+    </ul>
+    <h2>Submit a name</h2>
+    <div>
+        <input type="text" id="newName" style="color:black;">
+        <button id="submitName" onclick="submitName()">Submit</button>
+    </div>
+  </div>
+  <script src="/scripts/pr10-client.js"></script>
+  
+</div>
+<div class="container">
+  
+</div>
+
+
+</body>
+</html>
