@@ -43,9 +43,9 @@ router.post('/insertName', (req,res,next) => {
 });
 
 router.get ('/getHomepage',(req,res, next) => {
-    res.render('pages/prove10', {
-        pageTitle: 'Prove10',
-        path: '/prove10'
+    res.render('pages/prove11', {
+        pageTitle: 'Prove11',
+        path: '/prove11'
 
     });
 });
