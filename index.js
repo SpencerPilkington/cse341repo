@@ -38,7 +38,7 @@ const ta05Routes = require('./routes/ta05');
 const userData = require('./routes/prove02-input');
 const prove05adminRoute = require('./routes/prove05-admin');
 const prove09Route = require('./routes/prove09');
-const prove10Route = require('./routes/prove10');
+const prove11Route = require('./routes/prove11');
 const prove05shopRoute = require('./routes/prove05-shop');
 const errorController = require('./controllers/error');
 const csrfProtection = csrf();
@@ -111,7 +111,7 @@ app.use(express.static(path.join(__dirname, 'public')))
    .use(authRoutes)
    .use(prove09Route)
    .use(bodyParser.json())
-   .use(prove10Route)
+   .use(prove11Route)
    .get('/', (req, res, next) => {
      // This is the primary index, always handled last. 
      res.render('pages/index', {title: 'Welcome to my CSE341 repo', path: '/'});
