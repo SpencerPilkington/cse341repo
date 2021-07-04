@@ -68,7 +68,7 @@ app.use(express.static(path.join(__dirname, 'public')))
      store: store
     })
    )
-   .use(csrfProtection)
+  //  .use(csrfProtection)
    .use(flash())
 
    
@@ -83,11 +83,11 @@ app.use(express.static(path.join(__dirname, 'public')))
      })
      .catch(err => console.log(err));
    })
-   .use((req,res,next) => {
-    res.locals.isAuthenticated = req.session.isLoggedIn;
-    res.locals.csrfToken = req.csrfToken();
-    next();
-  })
+  //  .use((req,res,next) => {
+  //   res.locals.isAuthenticated = req.session.isLoggedIn;
+  //   res.locals.csrfToken = req.csrfToken();
+  //   next();
+  // })
    
    
    .use('/ta01', ta01Routes)
@@ -158,7 +158,17 @@ mongoose
     //      user.save();
     //    }
     //  });
-    app.listen(PORT);
+    const server = app.listen(PORT);
+    const io = require('socket.io')(server);
+    io.on('connection', (socket) => {
+      console.log('CLient Connected!');
+
+      socket.on('new-name', () => {
+        socket.broadcast.emit('update-list');
+      });
+    });
+
+
   })
   .catch(err => {
     console.log(err);

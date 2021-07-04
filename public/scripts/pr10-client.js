@@ -1,4 +1,5 @@
 const { default: fetch } = require("node-fetch")
+const openSocket = require('socket.io-client');
 
 const populateList = () => {
     const nameList = document.getElementById('nameList')
@@ -13,6 +14,7 @@ const populateList = () => {
             li.appendChild(document.createTextNode(avenger.name))
             nameList.appendChild(li)
         }
+        openSocket('http://localhost:5000')
     })
     .catch(err => {
         console.error(err)

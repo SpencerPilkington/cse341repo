@@ -25,14 +25,6 @@ const dummyData = {
     ]
 };
 
-router.get ('/getHomepage',(req,res, next) => {
-    res.render('pages/prove10', {
-        pageTitle: 'Prove10',
-        path: '/prove10'
-
-    })
-})
-
 router.get('/fetchAll', (req,res, next) => {
     res.json(dummyData)
 });
@@ -48,8 +40,15 @@ router.post('/insertName', (req,res,next) => {
     } else {
         res.sendStatus(400)
     }
-})
+});
 
+router.get ('/getHomepage',(req,res, next) => {
+    res.render('pages/prove10', {
+        pageTitle: 'Prove10',
+        path: '/prove10'
+
+    });
+});
 
 
 module.exports = router;
